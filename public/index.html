@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMPIRƎ AI OS | Fast Industries - Command Your AI Empire</title>
+    <meta name="description" content="The deterministic AI operating system. KLYDE controller, Firmament Engine, FOSHOUSE command interface. Zero hallucinations. Total control.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #00f0ff;
+            --primary-dark: #0080aa;
+            --secondary: #ff00ff;
+            --accent: #00ff88;
+            --warning: #ffaa00;
+            --danger: #ff3366;
+            --bg-dark: #030308;
+            --bg-panel: rgba(10, 15, 25, 0.85);
+            --border-glow: rgba(0, 240, 255, 0.3);
+            --text: #e0e8f0;
+            --text-dim: #6080a0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /* BACKGROUND EFFECTS                                                  */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .bg-radial {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 50% 0%, rgba(0, 240, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /* NAVIGATION                                                          */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(3, 3, 8, 0.95) 0%, transparent 100%);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-cta {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 12px 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        
+        .nav-cta:hover {
+            background: var(--primary);
+            color: var(--bg-dark);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /* HERO SECTION                                                        */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 40px 80px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            animation: pulse-border 2s infinite;
+        }
+        
+        @keyframes pulse-border {
+            0%, 100% { border-color: var(--accent); box-shadow: 0 0 10px rgba(0, 255, 136, 0.3); }
+            50% { border-color: rgba(0, 255, 136, 0.5); box-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
+        }
+        
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            letter-spacing: 10px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, #ffffff 50%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px rgba(0, 240, 255, 0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-dim);
+            margin-bottom: 15px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+        
+        .hero-tagline {
+            font-size: 1.2rem;
+            color: var(--text);
+            max-width: 700px;
+            margin-bottom: 50px;
+            line-height: 1.8;
+        }
+        
+        .hero-cta-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--bg-dark);
+            padding: 18px 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0, 240, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            padding: 18px 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border: 1px solid var(--text-dim);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 60px;
+            margin-top: 80px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /* DEMO SECTION                                                        */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        
+        .demo-section {
+            padding: 100px 40px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        
+        .section-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .section-header p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .demo-window {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(0, 240, 255, 0.1);
+        }
+        
+        .demo-header {
+            background: rgba(0, 240, 255, 0.05);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid var(--border-glow);
+        }
+        
+        .demo-dots {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .demo-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .demo-dot.red { background: #ff5f57; }
+        .demo-dot.yellow { background: #febc2e; }
+        .demo-dot.green { background: #28c840; }
+        
+        .demo-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        
+        .demo-content {
+            padding: 30px;
+            min-height: 400px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+        
+        .demo-line {
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        .demo-line.prompt {
+            color: var(--accent);
+        }
+        
+        .demo-line.response {
+            color: var(--text);
+            padding-left: 20px;
+        }
+        
+        .demo-line.system {
+            color: var(--primary);
+        }
+        
+        .demo-line.warning {
+            color: var(--warning);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /* FEATURES SECTION                                                    */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        
+        .features-section {
+            padding: 100px 40px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-glow);
+            padding: 40px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 240, 255, 0.1);
+        }
+        
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--primary);
+        }
+        
+        .feature-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+        
+        .feature-card p {
+            color: var(--text-dim);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /* ARCHITECTURE SECTION                                                */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        
+        .architecture-section {
+            padding: 100px 40px;
+            position: relative;
+            z-index: 10;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 240, 255, 0.02) 50%, transparent 100%);
+        }
+        
+        .arch-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .arch-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .arch-layer {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-glow);
+            padding: 30px 40px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .arch-layer:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.1);
+        }
+        
+        .arch-layer.highlight {
+            border-color: var(--primary);
+            background: rgba(0, 240, 255, 0.05);
+        }
+        
+        .arch-level {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: var(--primary);
+            letter-spacing: 2px;
+            min-width: 80px;
+        }
+        
+        .arch-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            min-width: 200px;
+        }
+        
+        .arch-desc {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            flex: 1;
+        }
+        
+        .arch-connector {
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(180deg, var(--primary), transparent);
+            margin: -10px auto;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /* PRICING SECTION                                                     */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        
+        .pricing-section {
+            padding: 100px 40px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .pricing-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        .pricing-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-glow);
+            padding: 50px 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .pricing-card.featured {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+        
+        .pricing-card.featured::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: var(--bg-dark);
+            padding: 5px 20px;
+            font-size: 0.7rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 240, 255, 0.15);
+        }
+        
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        
+        .pricing-tier {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .pricing-price {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .pricing-price span {
+            font-size: 1rem;
+            color: var(--text-dim);
+        }
+        
+        .pricing-desc {
+            color: var(--text-dim);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 40px;
+        }
+        
+        .pricing-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .pricing-features li.disabled {
+            color: var(--text-dim);
+            opacity: 0.5;
+        }
+        
+        .pricing-features li.disabled::before {
+            content: '—';
+            color: var(--text-dim);
+        }
+        
+        .pricing-btn {
+            width: 100%;
+            padding: 18px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .pricing-btn.primary {
+            background: var(--primary);
+            color: var(--bg-dark);
+        }
+        
+        .pricing-btn.primary:hover {
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+        }
+        
+        .pricing-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--text-dim);
+            color: var(--text);
+        }
+        
+        .pricing-btn.secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /* FOOTER                                                              */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        
+        footer {
+            padding: 80px 40px 40px;
+            border-top: 1px solid var(--border-glow);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+        }
+        
+        .footer-brand {
+            max-width: 300px;
+        }
+        
+        .footer-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .footer-brand p {
+            color: var(--text-dim);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+        
+        .footer-links h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            color: var(--text);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 60px auto 0;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /* RESPONSIVE                                                          */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        
+        @media (max-width: 1024px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                letter-spacing: 5px;
+            }
+            
+            .hero-stats {
+                gap: 30px;
+            }
+            
+            .arch-layer {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-grid"></div>
+    <div class="bg-radial"></div>
+    <div class="particles" id="particles"></div>
+    
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">
+            <div class="logo-icon">⬡</div>
+            FAST INDUSTRIƎS
+        </a>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#demo">Demo</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="/docs">Docs</a></li>
+        </ul>
+        <button class="nav-cta" onclick="scrollToSection('pricing')">Get Started</button>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <span class="hero-badge">Deterministic AI Infrastructure</span>
+        <h1>EMPIRƎ AI OS</h1>
+        <p class="hero-subtitle">Command Your AI Empire</p>
+        <p class="hero-tagline">
+            The production-grade AI operating system with zero hallucinations. 
+            KLYDƎ master controller, Firmament Engine, and FOSHOUSƎ holographic interface. 
+            Total control. Absolute precision.
+        </p>
+        <div class="hero-cta-group">
+            <a href="#pricing" class="btn-primary">Deploy Now</a>
+            <a href="#demo" class="btn-secondary">Watch Demo</a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-value">100%</span>
+                <span class="stat-label">Deterministic</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">0.03ms</span>
+                <span class="stat-label">Latency</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">∞</span>
+                <span class="stat-label">Scalable</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">7</span>
+                <span class="stat-label">Engines</span>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="demo-container">
+            <div class="section-header">
+                <span class="section-tag">Live Preview</span>
+                <h2>FOSHOUSƎ in Action</h2>
+                <p>Experience the power of deterministic AI command and control</p>
+            </div>
+            <div class="demo-window">
+                <div class="demo-header">
+                    <div class="demo-dots">
+                        <span class="demo-dot red"></span>
+                        <span class="demo-dot yellow"></span>
+                        <span class="demo-dot green"></span>
+                    </div>
+                    <span class="demo-title">FOSHOUSƎ Command Interface — KLYDƎ Active</span>
+                </div>
+                <div class="demo-content" id="demo-terminal">
+                    <!-- Demo lines will be injected by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="section-header">
+            <span class="section-tag">Core Systems</span>
+            <h2>Engineered for Control</h2>
+            <p>Every component designed for deterministic, verifiable AI operations</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <h3>KLYDƎ Controller</h3>
+                <p>The ONE AND ONLY brain. Single-path deterministic routing with safety approval layer. Every action verified, every output validated.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⬡</div>
+                <h3>Firmament Engine</h3>
+                <p>Truth Maintenance System, Structured Inference Engine, Temporal Reasoning Kernel, and Axis Cognitive Architecture. Rock-solid knowledge foundation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔮</div>
+                <h3>OmniCortex Bridge</h3>
+                <p>Neural-to-deterministic translation layer. Harness LLM power while maintaining 100% verifiable outputs through symbolic validation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>FOSHOUSƎ Interface</h3>
+                <p>Holographic 3D command dashboard with real-time system monitoring. See your entire AI empire at a glance with WebSocket streaming.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Temporal Engine</h3>
+                <p>Time-aware reasoning with future projection capabilities. Plan, simulate, and predict with temporal precision.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Simulation Engine</h3>
+                <p>Dry-run any action before execution. Risk assessment, outcome prediction, and confidence scoring built in.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Architecture Section -->
+    <section class="architecture-section" id="architecture">
+        <div class="arch-container">
+            <div class="section-header">
+                <span class="section-tag">System Design</span>
+                <h2>Hierarchical Architecture</h2>
+                <p>Clean separation of concerns with single-path deterministic flow</p>
+            </div>
+            <div class="arch-stack">
+                <div class="arch-layer highlight">
+                    <span class="arch-level">LEVEL 0</span>
+                    <span class="arch-name">YOU</span>
+                    <span class="arch-desc">Command authority. Every directive starts and ends with you.</span>
+                </div>
+                <div class="arch-connector"></div>
+                <div class="arch-layer">
+                    <span class="arch-level">LEVEL 1</span>
+                    <span class="arch-name">KLYDƎ</span>
+                    <span class="arch-desc">Safety approval layer. Single brain. No forks. No delegation.</span>
+                </div>
+                <div class="arch-connector"></div>
+                <div class="arch-layer">
+                    <span class="arch-level">LEVEL 2</span>
+                    <span class="arch-name">FIRMAMENT</span>
+                    <span class="arch-desc">Knowledge & truth foundation. TMS, SIE, TRK, ACA, Governance.</span>
+                </div>
+                <div class="arch-connector"></div>
+                <div class="arch-layer">
+                    <span class="arch-level">LEVEL 3</span>
+                    <span class="arch-name">OMNICORTEX</span>
+                    <span class="arch-desc">Neural-symbolic bridge. LLM power with deterministic validation.</span>
+                </div>
+                <div class="arch-connector"></div>
+                <div class="arch-layer">
+                    <span class="arch-level">LEVEL 4</span>
+                    <span class="arch-name">ENGINES</span>
+                    <span class="arch-desc">Temporal, Simulation, Causal, Knowledge. Specialized processing.</span>
+                </div>
+                <div class="arch-connector"></div>
+                <div class="arch-layer">
+                    <span class="arch-level">LEVEL 5</span>
+                    <span class="arch-name">EXECUTOR</span>
+                    <span class="arch-desc">Action execution. File ops, deployments, API calls, system control.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing Section -->
+    <section class="pricing-section" id="pricing">
+        <div class="section-header">
+            <span class="section-tag">Investment</span>
+            <h2>Choose Your Tier</h2>
+            <p>Perpetual license. Free updates for one year. No subscriptions.</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="pricing-tier">STANDARD</div>
+                <div class="pricing-price">$297<span>/once</span></div>
+                <p class="pricing-desc">Perfect for individual developers and small projects</p>
+                <ul class="pricing-features">
+                    <li>KLYDƎ Master Controller</li>
+                    <li>Firmament Engine (Full)</li>
+                    <li>FOSHOUSƎ Dashboard</li>
+                    <li>REST API Access</li>
+                    <li>1 Machine Activation</li>
+                    <li>90 Days Support</li>
+                    <li class="disabled">OmniCortex Bridge</li>
+                    <li class="disabled">Enterprise Engines</li>
+                </ul>
+                <button class="pricing-btn secondary" onclick="checkout('empire-os-standard')">Get Standard</button>
+            </div>
+            <div class="pricing-card featured">
+                <div class="pricing-tier">PROFESSIONAL</div>
+                <div class="pricing-price">$997<span>/once</span></div>
+                <p class="pricing-desc">Full power for serious AI infrastructure</p>
+                <ul class="pricing-features">
+                    <li>Everything in Standard</li>
+                    <li>OmniCortex Neural Bridge</li>
+                    <li>Plugin System Access</li>
+                    <li>WebSocket Streaming</li>
+                    <li>5 Machine Activations</li>
+                    <li>365 Days Priority Support</li>
+                    <li>Enterprise Engines</li>
+                    <li class="disabled">Unlimited Deployments</li>
+                </ul>
+                <button class="pricing-btn primary" onclick="checkout('empire-os-pro')">Get Professional</button>
+            </div>
+            <div class="pricing-card">
+                <div class="pricing-tier">ENTERPRISE</div>
+                <div class="pricing-price">$4,997<span>/once</span></div>
+                <p class="pricing-desc">Unlimited deployment with dedicated support</p>
+                <ul class="pricing-features">
+                    <li>Everything in Professional</li>
+                    <li>Unlimited Machines</li>
+                    <li>Custom Integrations</li>
+                    <li>White-label Option</li>
+                    <li>Dedicated Support Channel</li>
+                    <li>Architecture Review</li>
+                    <li>Priority Feature Requests</li>
+                    <li>Source Code Access</li>
+                </ul>
+                <button class="pricing-btn secondary" onclick="checkout('empire-os-enterprise')">Contact Sales</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="footer-logo">FAST INDUSTRIƎS</span>
+                <p>Building the future of deterministic AI infrastructure. Seven divisions. One vision. Total control.</p>
+            </div>
+            <div class="footer-links">
+                <h4>PRODUCT</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#architecture">Architecture</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="/changelog">Changelog</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>RESOURCES</h4>
+                <ul>
+                    <li><a href="/docs">Documentation</a></li>
+                    <li><a href="/api">API Reference</a></li>
+                    <li><a href="/tutorials">Tutorials</a></li>
+                    <li><a href="/support">Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>COMPANY</h4>
+                <ul>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/legal">Legal</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2025 Fast Industries. All rights reserved.</span>
+            <span>Built with EMPIRƎ AI OS</span>
+        </div>
+    </footer>
+    
+    <script>
+        // ═══════════════════════════════════════════════════════════════════
+        // PARTICLE SYSTEM
+        // ═══════════════════════════════════════════════════════════════════
+        
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // DEMO TERMINAL
+        // ═══════════════════════════════════════════════════════════════════
+        
+        const demoLines = [
+            { type: 'system', text: '▸ KLYDƎ v1.0.0 initialized' },
+            { type: 'system', text: '▸ Firmament Engine: ONLINE' },
+            { type: 'system', text: '▸ OmniCortex: HYBRID MODE' },
+            { type: 'system', text: '▸ FOSHOUSƎ ready for commands' },
+            { type: 'prompt', text: '❯ analyze market trends for AI developer tools' },
+            { type: 'response', text: '⟳ Routing through Firmament SIE...' },
+            { type: 'response', text: '✓ TMS verification: PASSED' },
+            { type: 'response', text: '✓ Confidence: 94.7%' },
+            { type: 'response', text: '→ TAM: $19.5B - $76.5B by 2028' },
+            { type: 'response', text: '→ Key segments: Code completion, Testing, Documentation' },
+            { type: 'response', text: '→ Growth drivers: Enterprise adoption, AI-native development' },
+            { type: 'prompt', text: '❯ simulate launch strategy: autofix enterprise' },
+            { type: 'system', text: '⟳ Simulation Engine activated...' },
+            { type: 'warning', text: '⚡ Running 1000 Monte Carlo iterations' },
+            { type: 'response', text: '✓ Best outcome: Direct enterprise sales + community edition' },
+            { type: 'response', text: '✓ Projected ARR Year 1: $1.2M - $2.8M' },
+            { type: 'response', text: '✓ Confidence interval: 87.3%' },
+            { type: 'system', text: '▸ Results cached to Firmament TMS' },
+            { type: 'prompt', text: '❯ _' }
+        ];
+        
+        function runDemo() {
+            const terminal = document.getElementById('demo-terminal');
+            terminal.innerHTML = '';
+            
+            demoLines.forEach((line, index) => {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.className = `demo-line ${line.type}`;
+                    el.textContent = line.text;
+                    el.style.animationDelay = '0s';
+                    terminal.appendChild(el);
+                    terminal.scrollTop = terminal.scrollHeight;
+                }, index * 400);
+            });
+            
+            // Loop the demo
+            setTimeout(runDemo, (demoLines.length * 400) + 5000);
+        }
+        
+        // Start demo when section is visible
+        const demoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    runDemo();
+                    demoObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        demoObserver.observe(document.getElementById('demo'));
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // CHECKOUT
+        // ═══════════════════════════════════════════════════════════════════
+        
+        async function checkout(productId) {
+            // Get email (in production, show a modal)
+            const email = prompt('Enter your email to continue:');
+            if (!email) return;
+            
+            try {
+                const response = await fetch('/api/v1/checkout/create-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        email: email
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.checkout_url) {
+                    window.location.href = data.checkout_url;
+                } else {
+                    alert('Error creating checkout session');
+                }
+            } catch (error) {
+                console.error('Checkout error:', error);
+                alert('Unable to process checkout. Please try again.');
+            }
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // SMOOTH SCROLL
+        // ═══════════════════════════════════════════════════════════════════
+        
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // NAV SCROLL EFFECT
+        // ═══════════════════════════════════════════════════════════════════
+        
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(3, 3, 8, 0.98)';
+            } else {
+                nav.style.background = 'linear-gradient(180deg, rgba(3, 3, 8, 0.95) 0%, transparent 100%)';
+            }
+        });
+    </script>
+</body>
+</html>
